@@ -1,9 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./database";
-import { authorRouter } from "../api/authors/author.routes";
-import { notFound } from "../middlewares/notFound";
-import { errorHandler } from "../middlewares/errorHandler";
+import { authorRouter } from "./api/authors/author.routes";
+import { notFound } from "./middlewares/notFound";
+import { errorHandler } from "./middlewares/errorHandler";
 import { env } from "./config/env";
 import morgan from "morgan";
 import cors from "cors";
