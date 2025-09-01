@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Book from "../../models/Book";
+import Author from "../../models/Author";
+import Category from "../../models/Category";
 
 export const getAllBooks = async (
   req: Request,
@@ -40,11 +42,30 @@ export const createBook = async (
   next: NextFunction
 ) => {
   try {
+    const imagePath = req.file ? req.file.path : null;
+    const foundAuthor = await Author.findById(req.body.authorId);
+    const foundCategory = await Category.findById(req.body.categoryId);
+    if (!foundAuthor) {
+      return res.status(404).json({ message: "author not found" });
+    }
     const newBook = await Book.create({
       ...req.body,
       author: req.body.authorId,
+      category: req.body.categoriesId,
+      image: imagePath,
     });
+
     if (newBook) {
+      foundAuthor?.books.push(newBook._id);
+      await foundAuthor?.save();
+      foundCategory?.books.push(newBook._id);
+      await foundCategory?.save();
+
+      await Category.updateMany(
+        { _id: { $in: req.body.categoriesId } },
+        { $addToSet: { books: newBook._id } }
+      );
+
       res.status(201).json(newBook);
     } else {
       res.status(404).json({ message: "couldnt find book" });

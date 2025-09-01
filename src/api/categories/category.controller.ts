@@ -38,7 +38,7 @@ export const createCategory = async (
   next: NextFunction
 ) => {
   try {
-    const newCategory = Category.create(req.body);
+    const newCategory = await Category.create(req.body);
     return res.status(201).json(newCategory);
   } catch (err) {
     next(err);
