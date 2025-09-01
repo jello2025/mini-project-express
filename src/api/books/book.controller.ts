@@ -40,7 +40,10 @@ export const createBook = async (
   next: NextFunction
 ) => {
   try {
-    const newBook = await Book.create(req.body);
+    const newBook = await Book.create({
+      ...req.body,
+      author: req.body.authorId,
+    });
     if (newBook) {
       res.status(201).json(newBook);
     } else {
