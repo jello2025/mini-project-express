@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { env } from "process";
+import { env } from "./config/env";
+
 dotenv.config();
 const DB_URL = env.DB_URL;
 

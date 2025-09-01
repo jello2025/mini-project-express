@@ -7,6 +7,8 @@ import { errorHandler } from "./middlewares/errorHandler";
 import { env } from "./config/env";
 import morgan from "morgan";
 import cors from "cors";
+import { categoryRouter } from "./api/categories/category.routes";
+import { bookRouter } from "./api/books/book.routes";
 dotenv.config();
 const app = express();
 
@@ -18,6 +20,8 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 app.use("/authors", authorRouter);
+app.use("/categories", categoryRouter);
+app.use("/books", bookRouter);
 app.use(notFound);
 app.use(errorHandler);
 
